@@ -80,8 +80,14 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "everycheese.users.apps.UsersConfig",
     # Your stuff: custom apps go here
+    "everycheese.cheeses.apps.CheesesConfig", # cheese info app
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
+#• DJANGO_APPS: Приложения, являющиеся частью базовой кодовой базы Django.
+#• THIRD_PARTY_APPS: Многоразовые приложения Django доступны в
+#      Индекс пакета Python. Третья сторона означает, что она не является частью Ядро Джанго.
+#• LOCAL_APPS: Django приложения, которые являются внутренними для нашего Django
+#, например, приложение для пользователей.
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # MIGRATIONS
