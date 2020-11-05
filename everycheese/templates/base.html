@@ -1,5 +1,5 @@
 {% load static i18n %}<!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -43,6 +43,9 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'about' %}">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'cheeses:list' %}">Cheeses</a>
             </li>
             {% if request.user.is_authenticated %}
               <li class="nav-item">
@@ -102,4 +105,4 @@
     {% endblock javascript %}
   </body>
 </html>
- 
+
