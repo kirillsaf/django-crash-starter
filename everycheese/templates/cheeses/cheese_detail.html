@@ -1,17 +1,23 @@
 {% extends "base.html" %}
 
-{% block title %}Cheeses: {{ cheese.name }}{% endblock %}
+{% block title %}Сыры: {{ cheese.name }}{% endblock %}
 
 {% block content %}
 
 <h2>{{ cheese.name }}</h2>
 
 {% if cheese.firmness %}
-    <p>Firmness: {{ cheese.get_firmness_display }}</p>
+    <p>Твердость: {{ cheese.get_firmness_display }}</p>
 {% endif %}
 
 {% if cheese.description %}
     <p>{{ cheese.description }}</p>
+{% endif %}
+
+{% if cheese.country_of_origin %}
+    <p>Страна происхождения: {{ cheese.country_of_origin.name }}
+    <img src="{{ cheese.country_of_origin.flag }}" />
+    </p>
 {% endif %}
 
 {% endblock content %}

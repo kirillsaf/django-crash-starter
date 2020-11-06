@@ -2,6 +2,7 @@ from django.db import models
 
 from autoslug import AutoSlugField
 from model_utils.models import TimeStampedModel
+from django_countries.fields import CountryField
 
 class Cheese(TimeStampedModel):
 
@@ -12,12 +13,13 @@ class Cheese(TimeStampedModel):
         SEMI_HARD = "semi-hard", "Semi-Hard"
         HARD = "hard", "Hard"
 
-    name = models.CharField("Name of Cheese", max_length=255)
-    slug = AutoSlugField("Cheese Address",
+    name = models.CharField("Название сыра", max_length=255)
+    slug = AutoSlugField("Адрес сыра",
                          unique=True, always_update=False, populate_from="name")
-    description = models.TextField("Description", blank=True)
-    firmness = models.CharField("Firmness", max_length=20,
+    description = models.TextField("Описание", blank=True)
+    firmness = models.CharField("Твердость", max_length=20,
                                 choices=Firmness.choices, default=Firmness.UNSPECIFIED)
+    country_of_origin = CountryField("Страна происхождения", blank=True)
 
     def __str__(self):
         return self.name
