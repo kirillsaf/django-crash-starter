@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Cheese List{% endblock title %}
+{% block title %}Список сыров{% endblock title %}
 
 {% block content %}
     <h2>Список сыров</h2>
@@ -11,4 +11,14 @@
     {% endfor %}
 </ul>
 
+<hr/>
+<p>Не видите сыр, указанный здесь?</p>
+<p>
+    <a class="btn btn-primary"
+        href="{% url 'cheeses:add' %}" role="button">
+        Добавить сыр
+    </a>
+</p>
+
 {% endblock content %}
+
