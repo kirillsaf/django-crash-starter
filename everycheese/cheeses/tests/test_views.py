@@ -10,9 +10,10 @@ from ..models import Cheese
 from ..views import (
     CheeseCreateView,
     CheeseListView,
-    CheeseDetailView
+    CheeseDetailView,
+    CheeseUpdateView
 )
-from .factories import CheeseFactory
+from .factories import CheeseFactory, cheese
 
 pytestmark = pytest.mark.django_db
 
@@ -41,7 +42,7 @@ def test_good_cheese_list_view(rf):
     # Проверьте правильность ответа
     assertContains(response, 'Список сыров')
 
-def test_good_cheese_detail_view(rf):
+def test_good_cheese_detail_view(rf, cheese):
     # Закажите сыр на CheeseFactoryy
     cheese = CheeseFactory()
     # Сделайте заявку на наш новый сыр
@@ -107,3 +108,41 @@ def test_cheese_create_form_valid(rf, admin_user):
     assert cheese.description == "Соленый твердый сыр"
     assert cheese.firmness == Cheese.Firmness.HARD
     assert cheese.creator == admin_user
+
+def test_cheese_create_correct_title(rf, admin_user):
+    """Заголовок страницы для CheeseCreateView должен быть «Добавить сыр».."""
+    request = rf.get(reverse('cheeses:add'))
+    request.user = admin_user
+    response = CheeseCreateView.as_view()(request)
+    assertContains(response, 'Добавить cыр')
+
+def test_good_cheese_update_view(rf, admin_user, cheese):
+    url = reverse("cheeses:update", kwargs={'slug': cheese.slug})
+    # Сделайте заявку на наш новый сыр
+    request = rf.get(url)
+    # Добавить аутентифицированного пользователя
+    request.user = admin_user
+    # Используйте запрос, чтобы получить ответ
+    callable_obj = CheeseUpdateView.as_view()
+    response = callable_obj(request, slug=cheese.slug)
+    # Проверьте правильность ответа
+    assertContains(response, "Обновить cыр")
+
+def test_cheese_update(rf, admin_user, cheese):
+    """POST-запрос к CheeseUpdateView обновляет сыр
+    и перенаправляет
+    """
+    # Сделайте заявку на наш новый сыр
+    form_data = {
+        'name': cheese.name,
+        'description': 'Что-то новое',
+        'firmness': cheese.firmness
+    }
+    url = reverse("cheeses:update", kwargs={'slug': cheese.slug})
+    request = rf.post(url, form_data)
+    request.user = admin_user
+    callable_obj = CheeseUpdateView.as_view()
+    response = callable_obj(request, slug=cheese.slug)
+    # # Убедитесь, что сыр был заменен
+    cheese.refresh_from_db()
+    assert cheese.description == 'Что-то новое'

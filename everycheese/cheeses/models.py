@@ -28,5 +28,5 @@ class Cheese(TimeStampedModel):
         return self.name
 
     def get_absolute_url(self):
-        """Return absolute URL to the Cheese Detail page."""
+        """Вернуть абсолютный URL-адрес на страницу сведений о сыре."""
         return reverse('cheeses:detail', kwargs={"slug": self.slug})
